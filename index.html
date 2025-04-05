@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Checklist Dieta 15 Dias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #bd93f9;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .item {
+            background: #44475a;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Checklist Dieta 15 Dias</h1>
+    <ul id="checklist">
+    </ul>
+
+    <script>
+        const itens = [
+            ["Frango grelhado (sassami)", "1.8 kg", "🍗"],
+            ["Carne moída", "1.2 kg", "🥩"],
+            ["Bife (alcatra ou contra-filé)", "330 g", "🥩"],
+            ["Peixe (tilápia)", "270 g", "🐟"],
+            ["Salmão", "240 g", "🐠"],
+            ["Atum light", "75 g", "🥫"],
+            ["Ovo", "8 unidades", "🥚"],
+            ["Claras de ovo", "6 unidades", "🥚"],
+            ["Requeijão light", "200 g", "🧀"],
+            ["Queijo branco", "80 g", "🧀"],
+            ["Cottage", "55 g", "🧀"],
+            ["Iogurte desnatado", "600 ml", "🥛"],
+            ["Leite desnatado", "900 ml", "🥛"],
+            ["Aveia em flocos", "95 g", "🌾"],
+            ["Granola sem açúcar", "30 g", "🥣"],
+            ["Pão de forma integral", "8 fatias", "🍞"],
+            ["Pão francês", "1 unidade", "🥖"],
+            ["Torrada integral", "10 unidades", "🍞"],
+            ["Bolacha de arroz", "30 g", "🍘"],
+            ["Tapioca", "70 g", "🌮"],
+            ["Arroz branco", "470 g", "🍚"],
+            ["Feijão", "140 g", "🫘"],
+            ["Lentilha", "180 g", "🌰"],
+            ["Macarrão", "75 g", "🍝"],
+            ["Quinoa", "20 g", "🌾"],
+            ["Batata doce", "390 g", "🍠"],
+            ["Batata inglesa", "400 g", "🥔"],
+            ["Mandioca", "150 g", "🌿"],
+            ["Mandioquinha", "120 g", "🥕"],
+            ["Inhame", "80 g", "🧄"],
+            ["Abóbora cabotiá", "520 g", "🎃"],
+            ["Milho", "35 g", "🌽"],
+            ["Morango", "650 g", "🍓"],
+            ["Banana", "110 g", "🍌"],
+            ["Melão", "345 g", "🍈"],
+            ["Mamão", "170 g", "🍈"],
+            ["Maçã", "65 g", "🍎"],
+            ["Kiwi", "110 g", "🥝"],
+            ["Melancia", "160 g", "🍉"],
+            ["Mix de folhas", "1.5 kg", "🥬"],
+            ["Mix de legumes", "2 kg", "🥦"],
+            ["Palmito", "15 pedaços", "🌴"],
+            ["Temperos", "a gosto", "🧂"],
+            ["Café/Chás", "à vontade", "☕"],
+            ["Gelatina zero", "opcional", "🍮"],
+            ["Adoçante (stevia/sucralose)", "a gosto", "🍯"]
+        ];
+
+        const checklistEl = document.getElementById('checklist');
+
+        itens.forEach(([nome, quantidade, emoji], index) => {
+            const li = document.createElement('li');
+            const checked = localStorage.getItem(`check_${index}`) === 'true';
+            li.innerHTML = `
+                <label class="item">
+                    <span class="icon">${emoji}</span>
+                    <input type="checkbox" ${checked ? "checked" : ""} onchange="localStorage.setItem('check_${index}', this.checked)">
+                    <span>${nome}: ${quantidade}</span>
+                </label>`;
+            checklistEl.appendChild(li);
+        });
+    </script>
+</body>
+</html>
