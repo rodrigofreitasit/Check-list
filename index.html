@@ -1,2 +1,67 @@
 
-<!-- HTML final 100% funcional será inserido aqui (será muito longo, será dividido) -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>App Dieta Completa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <!-- Abas -->
+    <div class="tabs">
+      <button onclick="mudarAba('lista')">Lista</button>
+      <button onclick="mudarAba('planner')">Planner</button>
+      <button onclick="mudarAba('progresso')">Progresso</button>
+    </div>
+
+    <!-- Páginas -->
+    <div class="page" id="listaPage">
+      <h2>Lista de Compras</h2>
+      <div class="bottom-buttons">
+        <button onclick="marcarTodos()">✔️ Marcar todos</button>
+        <button onclick="desmarcarTodos()">❌ Desmarcar todos</button>
+        <button onclick="abrirPopup()">➕ Adicionar</button>
+      </div>
+      <div id="checklistContainer"></div>
+    </div>
+
+    <div class="page hidden" id="plannerPage">
+      <select id="diaSelect" onchange="trocarDia()"></select>
+      <div id="refeicoesContainer"></div>
+      <div class="agua" id="aguaContainer"></div>
+      <div class="motivacional" id="fraseMotivacional"></div>
+    </div>
+
+    <div class="page hidden" id="progressoPage">
+      <h2>Seu Progresso</h2>
+      <div id="barraProgresso" class="barra-container"><div class="barra"></div></div>
+      <div id="resumoProgresso"></div>
+    </div>
+  </div>
+
+  <!-- Popup de novo item -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <button class="close" onclick="fecharPopup()">✖️</button>
+      <h3 id="popupTitle">Adicionar item</h3>
+      <input type="text" id="newEmoji" placeholder="Emoji" />
+      <input type="text" id="newName" placeholder="Nome do alimento" />
+      <input type="text" id="newQtd" placeholder="Quantidade" />
+      <select id="newCategoria">
+        <option value="Proteínas">Proteínas</option>
+        <option value="Laticínios">Laticínios</option>
+        <option value="Carboidratos">Carboidratos</option>
+        <option value="Frutas">Frutas</option>
+        <option value="Verduras e Legumes">Verduras e Legumes</option>
+        <option value="Outros">Outros</option>
+      </select>
+      <button onclick="salvarItem()">Salvar</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
