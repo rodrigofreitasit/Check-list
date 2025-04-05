@@ -7,15 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       background-color: #282a36;
       color: #f8f8f2;
       font-family: 'Poppins', sans-serif;
       margin: 0;
-      padding-top: 140px;
+      padding-top: 160px;
     }
     header {
       position: fixed;
@@ -67,6 +65,10 @@
     }
     .container {
       padding: 20px;
+    }
+    h2 {
+      color: #50fa7b;
+      margin-top: 30px;
     }
     .item {
       display: flex;
@@ -144,44 +146,125 @@
   </form>
 
   <script>
-    const checklistContainer = document.getElementById("checklist-container");
+    const categorias = {
+      "Proteínas": [
+        ["🍗", "Frango grelhado (sassami)", "1.8 kg"],
+        ["🥩", "Carne moída", "1.2 kg"],
+        ["🥩", "Bife (alcatra ou contra-filé)", "330 g"],
+        ["🐟", "Peixe (tilápia)", "270 g"],
+        ["🐠", "Salmão", "240 g"],
+        ["🥫", "Atum light", "75 g"],
+        ["🥚", "Ovo", "8 unidades"],
+        ["🥚", "Claras de ovo", "6 unidades"]
+      ],
+      "Laticínios": [
+        ["🧀", "Requeijão light", "200 g"],
+        ["🧀", "Queijo branco", "80 g"],
+        ["🧀", "Cottage", "55 g"],
+        ["🥛", "Iogurte desnatado", "600 ml"],
+        ["🥛", "Leite desnatado", "900 ml"]
+      ],
+      "Carboidratos": [
+        ["🌾", "Aveia em flocos", "95 g"],
+        ["🥣", "Granola sem açúcar", "30 g"],
+        ["🍞", "Pão de forma integral", "8 fatias"],
+        ["🥖", "Pão francês", "1 unidade"],
+        ["🍞", "Torrada integral", "10 unidades"],
+        ["🍘", "Bolacha de arroz", "30 g"],
+        ["🌮", "Tapioca", "70 g"],
+        ["🍚", "Arroz branco", "470 g"],
+        ["🫘", "Feijão", "140 g"],
+        ["🌰", "Lentilha", "180 g"],
+        ["🍝", "Macarrão", "75 g"],
+        ["🌾", "Quinoa", "20 g"],
+        ["🍠", "Batata doce", "390 g"],
+        ["🥔", "Batata inglesa", "400 g"],
+        ["🌿", "Mandioca", "150 g"],
+        ["🥕", "Mandioquinha", "120 g"],
+        ["🧄", "Inhame", "80 g"],
+        ["🎃", "Abóbora cabotiá", "520 g"],
+        ["🌽", "Milho", "35 g"]
+      ],
+      "Frutas": [
+        ["🍓", "Morango", "650 g"],
+        ["🍌", "Banana", "110 g"],
+        ["🍈", "Melão", "345 g"],
+        ["🍈", "Mamão", "170 g"],
+        ["🍎", "Maçã", "65 g"],
+        ["🥝", "Kiwi", "110 g"],
+        ["🍉", "Melancia", "160 g"]
+      ],
+      "Verduras e Legumes": [
+        ["🥬", "Mix de folhas", "1.5 kg"],
+        ["🥦", "Mix de legumes", "2 kg"],
+        ["🌴", "Palmito", "15 pedaços"]
+      ],
+      "Outros": [
+        ["🧂", "Temperos", "a gosto"],
+        ["☕", "Café/Chás", "à vontade"],
+        ["🍮", "Gelatina zero", "opcional"],
+        ["🍯", "Adoçante", "a gosto"]
+      ]
+    };
+
+    const temas = {
+      dracula: { bg: "#282a36", color: "#f8f8f2", accent: "#bd93f9", box: "#44475a", title: "#f1fa8c", progress: "#bd93f9" },
+      claro: { bg: "#f8f8f8", color: "#333", accent: "#007bff", box: "#ffffff", title: "#007bff", progress: "#007bff" },
+      pastel: { bg: "#fef6e4", color: "#001858", accent: "#f582ae", box: "#f3d2c1", title: "#8bd3dd", progress: "#f582ae" }
+    };
+
+    const container = document.getElementById("checklist-container");
     const filtroInput = document.getElementById("filtroBusca");
     const filtroTipo = document.getElementById("filtroTipo");
     const temaSelector = document.getElementById("temaSelector");
     const progressoTexto = document.getElementById("progresso-texto");
     const progressoBarra = document.getElementById("progresso-barra");
 
-    const dadosIniciais = [
-      ["🍗", "Frango grelhado (sassami)", "1.8 kg"],
-      ["🥩", "Carne moída", "1.2 kg"],
-      ["🥚", "Ovo", "8 unidades"],
-      ["🥝", "Kiwi", "110 g"],
-      ["🍞", "Pão integral", "8 fatias"],
-      ["🍠", "Batata doce", "390 g"],
-      ["🥦", "Mix legumes", "2 kg"],
-      ["🥬", "Mix folhas", "1.5 kg"],
-      ["☕", "Café preto", "à vontade"],
-      ["🍯", "Adoçante", "a gosto"]
-    ];
-
-    let dados = [...dadosIniciais];
     let checkboxes = [];
+    let dadosExtras = [];
 
-    function renderLista() {
-      checklistContainer.innerHTML = "";
+    function renderChecklist() {
+      container.innerHTML = "";
       checkboxes = [];
-      dados.forEach(([emoji, nome, qtd], i) => {
-        const id = "check_" + i;
+      let i = 0;
+
+      for (const [categoria, itens] of Object.entries(categorias)) {
+        const h2 = document.createElement("h2");
+        h2.textContent = categoria;
+        container.appendChild(h2);
+
+        itens.forEach(([emoji, nome, qtd]) => {
+          const id = `check_${i++}`;
+          const checked = localStorage.getItem(id) === "true";
+          const div = document.createElement("div");
+          div.className = "item";
+          div.dataset.nome = nome.toLowerCase();
+          div.innerHTML = `<input type="checkbox" id="${id}" ${checked ? "checked" : ""}>
+                           <span class="icon">${emoji}</span>
+                           <label for="${id}">${nome}: ${qtd}</label>`;
+          container.appendChild(div);
+
+          const cb = div.querySelector("input");
+          cb.addEventListener("change", () => {
+            localStorage.setItem(id, cb.checked);
+            atualizarProgresso();
+            aplicarFiltros();
+          });
+          checkboxes.push(cb);
+        });
+      }
+
+      dadosExtras.forEach(([emoji, nome, qtd], index) => {
+        const id = `extra_${index}`;
         const checked = localStorage.getItem(id) === "true";
         const div = document.createElement("div");
         div.className = "item";
         div.dataset.nome = nome.toLowerCase();
-        div.innerHTML = `
-          <input type="checkbox" id="${id}" ${checked ? "checked" : ""}>
-          <span class="icon">${emoji}</span>
-          <label for="${id}">${nome}: ${qtd}</label>
-        `;
-        checklistContainer.appendChild(div);
+        div.innerHTML = `<input type="checkbox" id="${id}" ${checked ? "checked" : ""}>
+                         <span class="icon">${emoji}</span>
+                         <label for="${id}">${nome}: ${qtd}</label>`;
+        container.appendChild(div);
+
         const cb = div.querySelector("input");
         cb.addEventListener("change", () => {
           localStorage.setItem(id, cb.checked);
@@ -190,6 +273,7 @@
         });
         checkboxes.push(cb);
       });
+
       atualizarProgresso();
       aplicarFiltros();
     }
@@ -213,11 +297,9 @@
       });
     }
 
-    const temas = {
-      dracula: { bg: "#282a36", color: "#f8f8f2", accent: "#bd93f9", box: "#44475a", title: "#f1fa8c", progress: "#bd93f9" },
-      claro: { bg: "#f8f8f8", color: "#333", accent: "#007bff", box: "#ffffff", title: "#007bff", progress: "#007bff" },
-      pastel: { bg: "#fef6e4", color: "#001858", accent: "#f582ae", box: "#f3d2c1", title: "#8bd3dd", progress: "#f582ae" }
-    };
+    temaSelector.addEventListener("change", () => aplicarTema(temaSelector.value));
+    filtroInput.addEventListener("input", aplicarFiltros);
+    filtroTipo.addEventListener("change", aplicarFiltros);
 
     function aplicarTema(nome) {
       const t = temas[nome];
@@ -230,28 +312,22 @@
       localStorage.setItem("tema_app", nome);
     }
 
-    temaSelector.addEventListener("change", () => aplicarTema(temaSelector.value));
-    filtroInput.addEventListener("input", aplicarFiltros);
-    filtroTipo.addEventListener("change", aplicarFiltros);
-
-    // Adição de novos itens
     document.getElementById("add-form").addEventListener("submit", (e) => {
       e.preventDefault();
       const emoji = document.getElementById("novoEmoji").value.trim() || "📝";
       const nome = document.getElementById("novoNome").value.trim();
       const qtd = document.getElementById("novaQtd").value.trim();
       if (nome && qtd) {
-        dados.push([emoji, nome, qtd]);
-        renderLista();
+        dadosExtras.push([emoji, nome, qtd]);
         e.target.reset();
+        renderChecklist();
       }
     });
 
-    // Inicialização
     const temaSalvo = localStorage.getItem("tema_app") || "dracula";
     temaSelector.value = temaSalvo;
     aplicarTema(temaSalvo);
-    renderLista();
+    renderChecklist();
   </script>
 </body>
 </html>
