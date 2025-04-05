@@ -139,7 +139,7 @@
       cursor: pointer;
     }
 
-    #searchBar {
+    #searchBar { display: none; transition: all 0.3s ease; }
       display: none;
       padding: 10px 20px;
       background: #1e1f29;
@@ -153,30 +153,10 @@
       font-size: 14px;
     }
   
-        body.light-theme {
-          background-color: #f8f8f8;
-          color: #1a1a1a;
-        }
-        body.light-theme .progress-bar {
-          background: #ddd;
-        }
-        body.light-theme .progress-fill {
-          background: #007bff;
-        }
-        body.light-theme .item {
-          background: #fff;
-          color: #1a1a1a;
-        }
-        body.light-theme .bottom-menu {
-          background: #eee;
-          border-top: 1px solid #ccc;
-          color: #1a1a1a;
-        }
-        body.light-theme .popup-content {
-          background: #fff;
-          color: #1a1a1a;
-        }
-        </style>
+    .ativo {
+      display: block !important;
+    }
+    </style>
 </head>
 <body>
   <div class="progress-bar">
@@ -308,25 +288,19 @@
         document.getElementById("newEmoji").value = "";
         document.getElementById("newName").value = "";
         document.getElementById("newQtd").value = "";
-        
-        const temaSalvo = localStorage.getItem("tema_v6") || "dark";
-        if (temaSalvo === "light") document.body.classList.add("light-theme");
         renderChecklist();
-        
       }
     }
 
     function toggleSearch() {
-      searchBar.style.display = (searchBar.style.display === "none" || searchBar.style.display === "") ? "block" : "none";
+  const visivel = searchBar.classList.toggle("ativo");
+  searchBar.style.display = visivel ? "block" : "none";
+}
+      searchBar.style.display = searchBar.style.display === "none" ? "block" : "none";
     }
 
     function toggleTheme() {
-      
-        const atual = localStorage.getItem("tema_v6") || "dark";
-        const novo = atual === "dark" ? "light" : "dark";
-        localStorage.setItem("tema_v6", novo);
-        document.body.classList.toggle("light-theme", novo === "light");
-        
+      document.body.classList.toggle("light-theme");
     }
 
     searchInput.addEventListener("input", () => {
@@ -337,11 +311,7 @@
       });
     });
 
-    
-        const temaSalvo = localStorage.getItem("tema_v6") || "dark";
-        if (temaSalvo === "light") document.body.classList.add("light-theme");
-        renderChecklist();
-        
+    renderChecklist();
   </script>
 </body>
 </html>
