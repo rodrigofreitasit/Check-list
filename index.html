@@ -1,1 +1,234 @@
-PLACEHOLDER
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Checklist Dieta 15 Dias</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #282a36;
+            color: #f8f8f2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #bd93f9;
+        }
+        h2 {
+            color: #50fa7b;
+            margin-top: 30px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .item {
+            background: #44475a;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        #progresso {
+            margin-top: 15px;
+            background: #44475a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #progresso-barra {
+            height: 20px;
+            background: #bd93f9;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        #progresso-texto {
+            margin-top: 5px;
+            font-size: 16px;
+            color: #f1fa8c;
+        }
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .top-bar input, .top-bar select {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+        }
+        .top-bar input {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Checklist Dieta 15 Dias</h1>
+
+    <div class="top-bar">
+        <input type="text" id="filtroBusca" placeholder="Buscar item...">
+        <select id="filtroTipo">
+            <option value="todos">Mostrar todos</option>
+            <option value="nao-marcados">Somente não marcados</option>
+        </select>
+        <select id="temaSelector">
+            <option value="dracula">Drácula</option>
+            <option value="claro">Claro</option>
+            <option value="pastel">Pastel</option>
+        </select>
+    </div>
+
+    <div id="progresso">
+        <div id="progresso-barra"></div>
+    </div>
+    <div id="progresso-texto">0 de 0 itens marcados</div>
+
+    <div id="checklist-container"></div>
+
+    <script>
+        const dados = [
+            ["🍗", "Frango grelhado (sassami)", "1.8 kg", "Proteínas"],
+            ["🥩", "Carne moída", "1.2 kg", "Proteínas"],
+            ["🥩", "Bife (alcatra ou contra-filé)", "330 g", "Proteínas"],
+            ["🐟", "Peixe (tilápia)", "270 g", "Proteínas"],
+            ["🐠", "Salmão", "240 g", "Proteínas"],
+            ["🥫", "Atum light", "75 g", "Proteínas"],
+            ["🥚", "Ovo", "8 unidades", "Proteínas"],
+            ["🥚", "Claras de ovo", "6 unidades", "Proteínas"],
+            ["🧀", "Requeijão light", "200 g", "Laticínios"],
+            ["🧀", "Queijo branco", "80 g", "Laticínios"],
+            ["🧀", "Cottage", "55 g", "Laticínios"],
+            ["🥛", "Iogurte desnatado", "600 ml", "Laticínios"],
+            ["🥛", "Leite desnatado", "900 ml", "Laticínios"],
+            ["🌾", "Aveia em flocos", "95 g", "Carboidratos"],
+            ["🥣", "Granola sem açúcar", "30 g", "Carboidratos"],
+            ["🍞", "Pão de forma integral", "8 fatias", "Carboidratos"],
+            ["🥖", "Pão francês", "1 unidade", "Carboidratos"],
+            ["🍞", "Torrada integral", "10 unidades", "Carboidratos"],
+            ["🍘", "Bolacha de arroz", "30 g", "Carboidratos"],
+            ["🌮", "Tapioca", "70 g", "Carboidratos"],
+            ["🍚", "Arroz branco", "470 g", "Carboidratos"],
+            ["🫘", "Feijão", "140 g", "Carboidratos"],
+            ["🌰", "Lentilha", "180 g", "Carboidratos"],
+            ["🍝", "Macarrão", "75 g", "Carboidratos"],
+            ["🌾", "Quinoa", "20 g", "Carboidratos"],
+            ["🍠", "Batata doce", "390 g", "Carboidratos"],
+            ["🥔", "Batata inglesa", "400 g", "Carboidratos"],
+            ["🌿", "Mandioca", "150 g", "Carboidratos"],
+            ["🥕", "Mandioquinha", "120 g", "Carboidratos"],
+            ["🧄", "Inhame", "80 g", "Carboidratos"],
+            ["🎃", "Abóbora cabotiá", "520 g", "Carboidratos"],
+            ["🌽", "Milho", "35 g", "Carboidratos"],
+            ["🍓", "Morango", "650 g", "Frutas"],
+            ["🍌", "Banana", "110 g", "Frutas"],
+            ["🍈", "Melão", "345 g", "Frutas"],
+            ["🍈", "Mamão", "170 g", "Frutas"],
+            ["🍎", "Maçã", "65 g", "Frutas"],
+            ["🥝", "Kiwi", "110 g", "Frutas"],
+            ["🍉", "Melancia", "160 g", "Frutas"],
+            ["🥬", "Mix de folhas", "1.5 kg", "Verduras"],
+            ["🥦", "Mix de legumes", "2 kg", "Verduras"],
+            ["🌴", "Palmito", "15 pedaços", "Verduras"],
+            ["🧂", "Temperos", "a gosto", "Outros"],
+            ["☕", "Café/Chás", "à vontade", "Outros"],
+            ["🍮", "Gelatina zero", "opcional", "Outros"],
+            ["🍯", "Adoçante (stevia/sucralose)", "a gosto", "Outros"]
+        ];
+
+        const temas = {
+            dracula: { bg: "#282a36", color: "#f8f8f2", accent: "#bd93f9", box: "#44475a", title: "#50fa7b", progress: "#bd93f9" },
+            claro: { bg: "#f8f8f8", color: "#333", accent: "#007bff", box: "#e2e2e2", title: "#007bff", progress: "#007bff" },
+            pastel: { bg: "#fef6e4", color: "#001858", accent: "#f582ae", box: "#f3d2c1", title: "#8bd3dd", progress: "#f582ae" }
+        };
+
+        const checklistContainer = document.getElementById("checklist-container");
+        const filtroInput = document.getElementById("filtroBusca");
+        const filtroTipo = document.getElementById("filtroTipo");
+        const temaSelector = document.getElementById("temaSelector");
+        const progressoTexto = document.getElementById("progresso-texto");
+        const progressoBarra = document.getElementById("progresso-barra");
+
+        let checkboxes = [];
+
+        dados.forEach(([emoji, nome, qtd, cat], i) => {
+            const checked = localStorage.getItem("check_" + i) === "true";
+            const div = document.createElement("div");
+            div.className = "item";
+            div.dataset.nome = nome.toLowerCase();
+            div.innerHTML = `
+                <span class="icon">${emoji}</span>
+                <input type="checkbox" id="check_${i}" ${checked ? "checked" : ""}>
+                <label for="check_${i}">${nome}: ${qtd}</label>
+            `;
+            checklistContainer.appendChild(div);
+
+            const cb = div.querySelector("input");
+            cb.addEventListener("change", () => {
+                localStorage.setItem("check_" + i, cb.checked);
+                atualizarProgresso();
+                aplicarFiltros();
+            });
+            checkboxes.push(cb);
+        });
+
+        function atualizarProgresso() {
+            const marcados = checkboxes.filter(cb => cb.checked).length;
+            const total = checkboxes.length;
+            const pct = (marcados / total) * 100;
+            progressoTexto.textContent = `${marcados} de ${total} itens marcados`;
+            progressoBarra.style.width = pct + "%";
+        }
+
+        function aplicarFiltros() {
+            const busca = filtroInput.value.toLowerCase();
+            const mostrarNaoMarcados = filtroTipo.value === "nao-marcados";
+
+            checkboxes.forEach(cb => {
+                const parent = cb.closest(".item");
+                const matchBusca = parent.dataset.nome.includes(busca);
+                const matchMarcado = !mostrarNaoMarcados || !cb.checked;
+                parent.style.display = matchBusca && matchMarcado ? "flex" : "none";
+            });
+        }
+
+        filtroInput.addEventListener("input", aplicarFiltros);
+        filtroTipo.addEventListener("change", aplicarFiltros);
+
+        function aplicarTema(nome) {
+            const t = temas[nome];
+            document.body.style.backgroundColor = t.bg;
+            document.body.style.color = t.color;
+            document.querySelectorAll("h1, h2").forEach(e => e.style.color = t.accent);
+            document.querySelectorAll(".item").forEach(e => e.style.background = t.box);
+            progressoTexto.style.color = t.title;
+            progressoBarra.style.background = t.progress;
+        }
+
+        temaSelector.addEventListener("change", () => {
+            localStorage.setItem("tema_app", temaSelector.value);
+            aplicarTema(temaSelector.value);
+        });
+
+        // Iniciar
+        atualizarProgresso();
+        aplicarFiltros();
+        const temaSalvo = localStorage.getItem("tema_app") || "dracula";
+        temaSelector.value = temaSalvo;
+        aplicarTema(temaSalvo);
+    </script>
+</body>
+</html>
