@@ -3,49 +3,27 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Checklist Dieta V6</title>
+  <title>Checklist Dieta V6 Novo Layout</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 0 0 80px 0;
+      padding: 0 0 100px;
       font-family: 'Poppins', sans-serif;
       background-color: #282a36;
       color: #f8f8f2;
     }
-    .progress-bar {
+
+    #searchBar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      padding: 10px 20px;
+      right: 0;
       background: #1e1f29;
+      padding: 12px 20px;
       z-index: 1000;
-    }
-    .progress-bar-text {
-      font-size: 14px;
-      color: #f1fa8c;
-    }
-    .progress-fill-container {
-      width: 100%;
-      background: #44475a;
-      height: 8px;
-      border-radius: 5px;
-      margin-top: 5px;
-    }
-    .progress-fill {
-      height: 8px;
-      background: #bd93f9;
-      border-radius: 5px;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-    #searchBar {
-      display: none;
-      padding: 10px 20px;
-      background: #1e1f29;
     }
     #searchInput {
       width: 100%;
@@ -54,13 +32,16 @@
       border: none;
       font-size: 14px;
     }
+
     .container {
-      padding: 140px 20px 20px;
+      padding: 80px 20px 20px;
     }
+
     h2 {
       color: #50fa7b;
       margin-top: 30px;
     }
+
     .item {
       display: flex;
       align-items: center;
@@ -70,29 +51,41 @@
       margin-bottom: 10px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
+
     .item .icon {
       font-size: 18px;
       margin-right: 12px;
     }
+
     input[type="checkbox"] {
       width: 18px;
       height: 18px;
       margin-right: 10px;
       accent-color: #bd93f9;
     }
+
     .bottom-menu {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 60px;
+      height: 100px;
       background: #1e1f29;
       display: flex;
-      justify-content: space-around;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
       border-top: 1px solid #444;
       z-index: 1000;
     }
+
+    .bottom-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 5px;
+    }
+
     .bottom-menu button {
       background: none;
       border: none;
@@ -100,7 +93,23 @@
       font-size: 22px;
       cursor: pointer;
     }
-    .popup {
+
+    .progress-fill-container {
+      width: 90%;
+      background: #44475a;
+      height: 8px;
+      border-radius: 5px;
+    }
+
+    .progress-fill {
+      height: 8px;
+      background: #bd93f9;
+      border-radius: 5px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .popup, .theme-popup {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
@@ -110,6 +119,7 @@
       justify-content: center;
       z-index: 2000;
     }
+
     .popup-content {
       background: #f8f8f2;
       color: #282a36;
@@ -118,9 +128,11 @@
       width: 90%;
       max-width: 400px;
     }
+
     .popup-content h3 {
       margin-top: 0;
     }
+
     .popup-content input, .popup-content select {
       width: 100%;
       margin-bottom: 10px;
@@ -129,6 +141,7 @@
       border-radius: 6px;
       font-size: 14px;
     }
+
     .popup-content button {
       width: 100%;
       padding: 10px;
@@ -138,26 +151,39 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
+    body.light-theme {
+      background-color: #f8f8f8;
+      color: #1a1a1a;
+    }
+    body.light-theme .item {
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+    body.light-theme .bottom-menu {
+      background: #eee;
+      color: #000;
+    }
+    body.light-theme .progress-fill {
+      background: #007bff;
+    }
   </style>
 </head>
 <body>
-  <div class="progress-bar">
-    <div class="progress-bar-text" id="progressText">0% completado</div>
-    <div class="progress-fill-container">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-  </div>
-
   <div id="searchBar">
-    <input type="text" id="searchInput" placeholder="Buscar item...">
+    <input type="text" id="searchInput" placeholder="Buscar item..." />
   </div>
 
   <div class="container" id="checklistContainer"></div>
 
   <div class="bottom-menu">
-    <button onclick="toggleSearch()">🔍</button>
-    <button onclick="openPopup()">➕</button>
-    <button onclick="toggleTheme()">🎨</button>
+    <div class="bottom-buttons">
+      <button onclick="openPopup()">➕</button>
+      <button onclick="openThemePopup()">🎨</button>
+    </div>
+    <div class="progress-fill-container">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
   </div>
 
   <div class="popup" id="popup">
@@ -178,13 +204,27 @@
     </div>
   </div>
 
+  <div class="popup" id="themePopup">
+    <div class="popup-content">
+      <h3>Escolher tema</h3>
+      <button onclick="setTheme('light')">Claro</button>
+      <button onclick="setTheme('dark')">Escuro</button>
+    </div>
+  </div>
+
   <script>
     const checklistContainer = document.getElementById("checklistContainer");
-    const searchBar = document.getElementById("searchBar");
-    const searchInput = document.getElementById("searchInput");
-    const progressText = document.getElementById("progressText");
     const progressFill = document.getElementById("progressFill");
     const popup = document.getElementById("popup");
+    const themePopup = document.getElementById("themePopup");
+
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("input", () => {
+      const termo = searchInput.value.toLowerCase();
+      document.querySelectorAll(".item").forEach(item => {
+        item.style.display = item.dataset.nome.includes(termo) ? "flex" : "none";
+      });
+    });
 
     let dados = {
       "Proteínas": [["🍗", "Frango grelhado", "1.8 kg"], ["🥩", "Carne moída", "1.2 kg"]],
@@ -235,16 +275,21 @@
       const total = checkboxes.length;
       const marcados = checkboxes.filter(cb => cb.checked).length;
       const pct = total > 0 ? Math.round((marcados / total) * 100) : 0;
-      progressText.textContent = `${pct}% completado`;
       progressFill.style.width = `${pct}%`;
-    }
-
-    function toggleSearch() {
-      searchBar.style.display = searchBar.style.display === "block" ? "none" : "block";
     }
 
     function openPopup() {
       popup.style.display = "flex";
+    }
+
+    function openThemePopup() {
+      themePopup.style.display = "flex";
+    }
+
+    function setTheme(theme) {
+      document.body.classList.toggle("light-theme", theme === "light");
+      localStorage.setItem("tema_v6", theme);
+      themePopup.style.display = "none";
     }
 
     function adicionarItem() {
@@ -255,28 +300,11 @@
       if (nome && qtd) {
         dados[cat].push([emoji, nome, qtd]);
         popup.style.display = "none";
-        document.getElementById("newEmoji").value = "";
-        document.getElementById("newName").value = "";
-        document.getElementById("newQtd").value = "";
         renderChecklist();
       }
     }
 
-    function toggleTheme() {
-      const atual = localStorage.getItem("tema_v6") || "dark";
-      const novo = atual === "dark" ? "light" : "dark";
-      localStorage.setItem("tema_v6", novo);
-      document.body.classList.toggle("light-theme", novo === "light");
-    }
-
-    searchInput.addEventListener("input", () => {
-      const termo = searchInput.value.toLowerCase();
-      document.querySelectorAll(".item").forEach(item => {
-        item.style.display = item.dataset.nome.includes(termo) ? "flex" : "none";
-      });
-    });
-
-    // Tema inicial
+    // Aplicar tema salvo
     const temaSalvo = localStorage.getItem("tema_v6") || "dark";
     if (temaSalvo === "light") document.body.classList.add("light-theme");
 
