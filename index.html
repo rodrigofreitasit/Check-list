@@ -2,66 +2,186 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>App Dieta Completa</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>Dieta Completa - Planner V9</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0 0 100px;
+      background: #282a36;
+      color: #f8f8f2;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      background: #44475a;
+      color: #f8f8f2;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      margin: 20px 0;
+    }
+    .refeicao {
+      background: #44475a;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .agua {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .copo {
+      width: 30px;
+      height: 30px;
+      background: #6272a4;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      user-select: none;
+    }
+    .copo.cheio {
+      background: #50fa7b;
+      color: #282a36;
+    }
+    .motivacional {
+      font-size: 16px;
+      color: #f1fa8c;
+      background: #44475a;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      margin-top: 30px;
+    }
+    h2 {
+      margin: 10px 0;
+      color: #50fa7b;
+    }
+    .container {
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <!-- Abas -->
-    <div class="tabs">
-      <button onclick="mudarAba('lista')">Lista</button>
-      <button onclick="mudarAba('planner')">Planner</button>
-      <button onclick="mudarAba('progresso')">Progresso</button>
-    </div>
+  <div class="container">
+    <h2>Modo Dieta Completa</h2>
+    <select id="diaSelect" onchange="trocarDia()"></select>
 
-    <!-- Páginas -->
-    <div class="page" id="listaPage" class="page active">
-      <h2>Lista de Compras</h2>
-      <div class="bottom-buttons">
-        <button onclick="marcarTodos()">✔️ Marcar todos</button>
-        <button onclick="desmarcarTodos()">❌ Desmarcar todos</button>
-        <button onclick="abrirPopup()">➕ Adicionar</button>
-      </div>
-      <div id="checklistContainer"></div>
-    </div>
+    <h2>Cardápio</h2>
+    <div id="refeicoesContainer"></div>
 
-    <div class="page" id="plannerPage">
-      <select id="diaSelect" onchange="trocarDia()"></select>
-      <div id="refeicoesContainer"></div>
-      <div class="agua" id="aguaContainer"></div>
-      <div class="motivacional" id="fraseMotivacional"></div>
-    </div>
+    <h2>Água (meta: 2L = 10 copos)</h2>
+    <div class="agua" id="aguaContainer"></div>
 
-    <div class="page" id="progressoPage">
-      <h2>Seu Progresso</h2>
-      <div id="barraProgresso" class="barra-container"><div class="barra"></div></div>
-      <div id="resumoProgresso"></div>
-    </div>
+    <div class="motivacional" id="fraseMotivacional"></div>
   </div>
 
-  <!-- Popup de novo item -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <button class="close" onclick="fecharPopup()">✖️</button>
-      <h3 id="popupTitle">Adicionar item</h3>
-      <input type="text" id="newEmoji" placeholder="Emoji" />
-      <input type="text" id="newName" placeholder="Nome do alimento" />
-      <input type="text" id="newQtd" placeholder="Quantidade" />
-      <select id="newCategoria">
-        <option value="Proteínas">Proteínas</option>
-        <option value="Laticínios">Laticínios</option>
-        <option value="Carboidratos">Carboidratos</option>
-        <option value="Frutas">Frutas</option>
-        <option value="Verduras e Legumes">Verduras e Legumes</option>
-        <option value="Outros">Outros</option>
-      </select>
-      <button onclick="salvarItem()">Salvar</button>
-    </div>
-  </div>
+  <script>
+    const frases = [
+      "Você não precisa ser perfeito, só precisa começar.",
+      "Cada refeição saudável é um passo rumo ao seu objetivo.",
+      "A consistência vence a motivação.",
+      "Você é mais forte do que imagina.",
+      "Confie no processo. Ele funciona."
+    ];
 
-  <script src="script.js"></script>
+    const cardapio = {
+      1: ["Café da manhã: Omelete + Aveia com banana",
+          "Almoço: Frango grelhado + Mix de legumes",
+          "Lanche: Iogurte com chia",
+          "Jantar: Sopa de legumes com ovo cozido"],
+      2: ["Café: Panqueca de banana com aveia",
+          "Almoço: Peixe + batata doce",
+          "Lanche: Fruta + castanhas",
+          "Jantar: Omelete com legumes"]
+    };
+    for (let i = 3; i <= 15; i++) {
+      cardapio[i] = ["Café: Exemplo", "Almoço: Exemplo", "Lanche: Exemplo", "Jantar: Exemplo"];
+    }
+
+    let diaAtual = 1;
+
+    function salvarLS(chave, valor) {
+      localStorage.setItem(chave, JSON.stringify(valor));
+    }
+
+    function carregarLS(chave, padrao) {
+      return JSON.parse(localStorage.getItem(chave)) || padrao;
+    }
+
+    function criarSelectDias() {
+      const select = document.getElementById("diaSelect");
+      for (let i = 1; i <= 15; i++) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.textContent = "Dia " + i;
+        if (i === diaAtual) opt.selected = true;
+        select.appendChild(opt);
+      }
+    }
+
+    function carregarFrase() {
+      const frase = frases[Math.floor(Math.random() * frases.length)];
+      document.getElementById("fraseMotivacional").textContent = frase;
+    }
+
+    function carregarRefeicoes() {
+      const container = document.getElementById("refeicoesContainer");
+      container.innerHTML = "";
+      const refeicoes = cardapio[diaAtual] || [];
+      const refeicoesFeitas = carregarLS("ref_" + diaAtual, []);
+
+      refeicoes.forEach((texto, idx) => {
+        const div = document.createElement("div");
+        div.className = "refeicao";
+        div.innerHTML = `<span>${texto}</span><input type="checkbox" ${refeicoesFeitas[idx] ? "checked" : ""}>`;
+        const cb = div.querySelector("input");
+        cb.addEventListener("change", () => {
+          refeicoesFeitas[idx] = cb.checked;
+          salvarLS("ref_" + diaAtual, refeicoesFeitas);
+        });
+        container.appendChild(div);
+      });
+    }
+
+    function carregarAgua() {
+      const container = document.getElementById("aguaContainer");
+      container.innerHTML = "";
+      const copos = carregarLS("agua_" + diaAtual, []);
+      for (let i = 0; i < 10; i++) {
+        const copo = document.createElement("div");
+        copo.className = "copo";
+        if (copos[i]) copo.classList.add("cheio");
+        copo.textContent = "💧";
+        copo.addEventListener("click", () => {
+          copos[i] = !copos[i];
+          salvarLS("agua_" + diaAtual, copos);
+          copo.classList.toggle("cheio");
+        });
+        container.appendChild(copo);
+      }
+    }
+
+    function trocarDia() {
+      diaAtual = parseInt(document.getElementById("diaSelect").value);
+      carregarRefeicoes();
+      carregarAgua();
+      carregarFrase();
+    }
+
+    criarSelectDias();
+    trocarDia();
+  </script>
 </body>
 </html>
