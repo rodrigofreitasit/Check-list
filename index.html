@@ -3,330 +3,307 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Checklist Dieta 15 Dias</title>
+  <title>Checklist Dieta V6</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
     body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
       background-color: #282a36;
       color: #f8f8f2;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding-top: 160px;
+      padding-bottom: 80px;
     }
-    header {
+
+    .progress-bar {
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      background: #1e1f29;
-      padding: 20px;
-      z-index: 999;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: 24px;
-      color: #bd93f9;
-    }
-    .top-bar {
+      width: 100%;
+      background: #44475a;
+      padding: 10px 20px;
+      z-index: 1000;
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
       align-items: center;
+      justify-content: space-between;
     }
-    .top-bar input, .top-bar select {
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: none;
+    .progress-bar-text {
       font-size: 14px;
-      outline: none;
+      color: #f1fa8c;
     }
-    #add-form {
-      margin: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .progress-fill {
+      width: 100%;
+      height: 8px;
+      background: #bd93f9;
+      border-radius: 5px;
+      margin-top: 5px;
+      transition: width 0.3s ease;
     }
-    #add-form input {
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: none;
-    }
-    #add-form button {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      background: #50fa7b;
-      color: #282a36;
-      cursor: pointer;
-      font-weight: bold;
-    }
+
     .container {
-      padding: 20px;
+      padding: 100px 20px 20px;
     }
+
     h2 {
       color: #50fa7b;
       margin-top: 30px;
     }
+
     .item {
       display: flex;
       align-items: center;
       background: #44475a;
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: all 0.3s ease;
     }
-    .item:hover {
-      transform: scale(1.01);
-    }
+
     .item .icon {
-      font-size: 20px;
+      font-size: 18px;
       margin-right: 12px;
     }
-    .item label {
-      flex-grow: 1;
-      font-size: 15px;
-    }
+
     input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      accent-color: #bd93f9;
-      margin-right: 12px;
-    }
-    #progresso {
-      background: #44475a;
-      border-radius: 10px;
-      overflow: hidden;
+      width: 18px;
       height: 18px;
-      margin-top: 10px;
+      margin-right: 10px;
+      accent-color: #bd93f9;
     }
-    #progresso-barra {
-      height: 100%;
-      background: #bd93f9;
-      width: 0%;
-      transition: width 0.3s ease;
+
+    .bottom-menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: #1e1f29;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #444;
+      z-index: 1000;
     }
-    #progresso-texto {
-      margin-top: 5px;
+
+    .bottom-menu button {
+      background: none;
+      border: none;
+      color: #f8f8f2;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .popup-content {
+      background: #f8f8f2;
+      color: #282a36;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .popup-content h3 {
+      margin-top: 0;
+    }
+
+    .popup-content input, .popup-content select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       font-size: 14px;
-      color: #f1fa8c;
+    }
+
+    .popup-content button {
+      width: 100%;
+      padding: 10px;
+      background: #50fa7b;
+      border: none;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #searchBar {
+      display: none;
+      padding: 10px 20px;
+      background: #1e1f29;
+    }
+
+    #searchBar input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Checklist Dieta 15 Dias</h1>
-    <div class="top-bar">
-      <input type="text" id="filtroBusca" placeholder="Buscar item...">
-      <select id="filtroTipo">
-        <option value="todos">Mostrar todos</option>
-        <option value="nao-marcados">Somente não marcados</option>
-      </select>
-      <select id="temaSelector">
-        <option value="dracula">Drácula</option>
-        <option value="claro">Claro</option>
-        <option value="pastel">Pastel</option>
-      </select>
+  <div class="progress-bar">
+    <div>
+      <div class="progress-bar-text" id="progressText">0% completado</div>
+      <div style="width: 100%; background: #6272a4; height: 8px; border-radius: 5px;">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
     </div>
-    <div id="progresso"><div id="progresso-barra"></div></div>
-    <div id="progresso-texto">0 de 0 itens marcados</div>
-  </header>
+  </div>
 
-  <div class="container" id="checklist-container"></div>
+  <div id="searchBar">
+    <input type="text" id="searchInput" placeholder="Buscar item...">
+  </div>
 
-  <form id="add-form">
-    <input type="text" id="novoEmoji" placeholder="Emoji" maxlength="2" required>
-    <input type="text" id="novoNome" placeholder="Nome do alimento" required>
-    <input type="text" id="novaQtd" placeholder="Quantidade" required>
-    <button type="submit">➕ Adicionar item</button>
-  </form>
+  <div class="container" id="checklist"></div>
+
+  <div class="bottom-menu">
+    <button onclick="toggleSearch()">🔍</button>
+    <button onclick="openPopup()">➕</button>
+    <button onclick="toggleTheme()">🎨</button>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h3>Adicionar item</h3>
+      <input type="text" id="newEmoji" placeholder="Emoji">
+      <input type="text" id="newName" placeholder="Nome do alimento">
+      <input type="text" id="newQtd" placeholder="Quantidade">
+      <select id="newCategoria">
+        <option value="Proteínas">Proteínas</option>
+        <option value="Laticínios">Laticínios</option>
+        <option value="Carboidratos">Carboidratos</option>
+        <option value="Frutas">Frutas</option>
+        <option value="Verduras e Legumes">Verduras e Legumes</option>
+        <option value="Outros">Outros</option>
+      </select>
+      <button onclick="adicionarItem()">Salvar</button>
+    </div>
+  </div>
 
   <script>
-    const categorias = {
+    const checklistContainer = document.getElementById("checklist");
+    const progressText = document.getElementById("progressText");
+    const progressFill = document.getElementById("progressFill");
+    const popup = document.getElementById("popup");
+    const searchBar = document.getElementById("searchBar");
+    const searchInput = document.getElementById("searchInput");
+
+    let dados = {
       "Proteínas": [
-        ["🍗", "Frango grelhado (sassami)", "1.8 kg"],
-        ["🥩", "Carne moída", "1.2 kg"],
-        ["🥩", "Bife (alcatra ou contra-filé)", "330 g"],
-        ["🐟", "Peixe (tilápia)", "270 g"],
-        ["🐠", "Salmão", "240 g"],
-        ["🥫", "Atum light", "75 g"],
-        ["🥚", "Ovo", "8 unidades"],
-        ["🥚", "Claras de ovo", "6 unidades"]
+        ["🍗", "Frango grelhado", "1.8 kg"],
+        ["🥩", "Carne moída", "1.2 kg"]
       ],
       "Laticínios": [
-        ["🧀", "Requeijão light", "200 g"],
-        ["🧀", "Queijo branco", "80 g"],
-        ["🧀", "Cottage", "55 g"],
-        ["🥛", "Iogurte desnatado", "600 ml"],
         ["🥛", "Leite desnatado", "900 ml"]
       ],
       "Carboidratos": [
-        ["🌾", "Aveia em flocos", "95 g"],
-        ["🥣", "Granola sem açúcar", "30 g"],
-        ["🍞", "Pão de forma integral", "8 fatias"],
-        ["🥖", "Pão francês", "1 unidade"],
-        ["🍞", "Torrada integral", "10 unidades"],
-        ["🍘", "Bolacha de arroz", "30 g"],
-        ["🌮", "Tapioca", "70 g"],
-        ["🍚", "Arroz branco", "470 g"],
-        ["🫘", "Feijão", "140 g"],
-        ["🌰", "Lentilha", "180 g"],
-        ["🍝", "Macarrão", "75 g"],
-        ["🌾", "Quinoa", "20 g"],
-        ["🍠", "Batata doce", "390 g"],
-        ["🥔", "Batata inglesa", "400 g"],
-        ["🌿", "Mandioca", "150 g"],
-        ["🥕", "Mandioquinha", "120 g"],
-        ["🧄", "Inhame", "80 g"],
-        ["🎃", "Abóbora cabotiá", "520 g"],
-        ["🌽", "Milho", "35 g"]
+        ["🍞", "Pão integral", "8 fatias"],
+        ["🍠", "Batata doce", "390 g"]
       ],
       "Frutas": [
-        ["🍓", "Morango", "650 g"],
-        ["🍌", "Banana", "110 g"],
-        ["🍈", "Melão", "345 g"],
-        ["🍈", "Mamão", "170 g"],
-        ["🍎", "Maçã", "65 g"],
-        ["🥝", "Kiwi", "110 g"],
-        ["🍉", "Melancia", "160 g"]
+        ["🍌", "Banana", "110 g"]
       ],
       "Verduras e Legumes": [
-        ["🥬", "Mix de folhas", "1.5 kg"],
-        ["🥦", "Mix de legumes", "2 kg"],
-        ["🌴", "Palmito", "15 pedaços"]
+        ["🥬", "Mix folhas", "1.5 kg"]
       ],
       "Outros": [
-        ["🧂", "Temperos", "a gosto"],
-        ["☕", "Café/Chás", "à vontade"],
-        ["🍮", "Gelatina zero", "opcional"],
-        ["🍯", "Adoçante", "a gosto"]
+        ["☕", "Café preto", "à vontade"]
       ]
     };
 
-    const temas = {
-      dracula: { bg: "#282a36", color: "#f8f8f2", accent: "#bd93f9", box: "#44475a", title: "#f1fa8c", progress: "#bd93f9" },
-      claro: { bg: "#f8f8f8", color: "#333", accent: "#007bff", box: "#ffffff", title: "#007bff", progress: "#007bff" },
-      pastel: { bg: "#fef6e4", color: "#001858", accent: "#f582ae", box: "#f3d2c1", title: "#8bd3dd", progress: "#f582ae" }
-    };
-
-    const container = document.getElementById("checklist-container");
-    const filtroInput = document.getElementById("filtroBusca");
-    const filtroTipo = document.getElementById("filtroTipo");
-    const temaSelector = document.getElementById("temaSelector");
-    const progressoTexto = document.getElementById("progresso-texto");
-    const progressoBarra = document.getElementById("progresso-barra");
-
     let checkboxes = [];
-    let dadosExtras = [];
 
     function renderChecklist() {
-      container.innerHTML = "";
+      checklistContainer.innerHTML = "";
       checkboxes = [];
-      let i = 0;
 
-      for (const [categoria, itens] of Object.entries(categorias)) {
-        const h2 = document.createElement("h2");
-        h2.textContent = categoria;
-        container.appendChild(h2);
+      let id = 0;
+      for (const [categoria, itens] of Object.entries(dados)) {
+        const title = document.createElement("h2");
+        title.textContent = categoria;
+        checklistContainer.appendChild(title);
 
         itens.forEach(([emoji, nome, qtd]) => {
-          const id = `check_${i++}`;
-          const checked = localStorage.getItem(id) === "true";
+          const cid = `item_${id++}`;
           const div = document.createElement("div");
           div.className = "item";
           div.dataset.nome = nome.toLowerCase();
-          div.innerHTML = `<input type="checkbox" id="${id}" ${checked ? "checked" : ""}>
-                           <span class="icon">${emoji}</span>
-                           <label for="${id}">${nome}: ${qtd}</label>`;
-          container.appendChild(div);
-
+          const checked = localStorage.getItem(cid) === "true";
+          div.innerHTML = `
+            <input type="checkbox" id="${cid}" ${checked ? "checked" : ""}>
+            <span class="icon">${emoji}</span>
+            <label for="${cid}">${nome}: ${qtd}</label>
+          `;
           const cb = div.querySelector("input");
           cb.addEventListener("change", () => {
-            localStorage.setItem(id, cb.checked);
+            localStorage.setItem(cid, cb.checked);
             atualizarProgresso();
-            aplicarFiltros();
           });
+          checklistContainer.appendChild(div);
           checkboxes.push(cb);
         });
       }
 
-      dadosExtras.forEach(([emoji, nome, qtd], index) => {
-        const id = `extra_${index}`;
-        const checked = localStorage.getItem(id) === "true";
-        const div = document.createElement("div");
-        div.className = "item";
-        div.dataset.nome = nome.toLowerCase();
-        div.innerHTML = `<input type="checkbox" id="${id}" ${checked ? "checked" : ""}>
-                         <span class="icon">${emoji}</span>
-                         <label for="${id}">${nome}: ${qtd}</label>`;
-        container.appendChild(div);
-
-        const cb = div.querySelector("input");
-        cb.addEventListener("change", () => {
-          localStorage.setItem(id, cb.checked);
-          atualizarProgresso();
-          aplicarFiltros();
-        });
-        checkboxes.push(cb);
-      });
-
       atualizarProgresso();
-      aplicarFiltros();
     }
 
     function atualizarProgresso() {
-      const marcados = checkboxes.filter(cb => cb.checked).length;
       const total = checkboxes.length;
-      const pct = (marcados / total) * 100;
-      progressoTexto.textContent = `${marcados} de ${total} itens marcados`;
-      progressoBarra.style.width = pct + "%";
+      const marcados = checkboxes.filter(cb => cb.checked).length;
+      const pct = Math.round((marcados / total) * 100);
+      progressText.textContent = `${pct}% completado`;
+      progressFill.style.width = `${pct}%`;
     }
 
-    function aplicarFiltros() {
-      const busca = filtroInput.value.toLowerCase();
-      const mostrarNaoMarcados = filtroTipo.value === "nao-marcados";
-      checkboxes.forEach(cb => {
-        const item = cb.closest(".item");
-        const match = item.dataset.nome.includes(busca);
-        const visivel = match && (!mostrarNaoMarcados || !cb.checked);
-        item.style.display = visivel ? "flex" : "none";
-      });
+    function openPopup() {
+      popup.style.display = "flex";
     }
 
-    temaSelector.addEventListener("change", () => aplicarTema(temaSelector.value));
-    filtroInput.addEventListener("input", aplicarFiltros);
-    filtroTipo.addEventListener("change", aplicarFiltros);
-
-    function aplicarTema(nome) {
-      const t = temas[nome];
-      document.body.style.backgroundColor = t.bg;
-      document.body.style.color = t.color;
-      document.querySelector("header").style.backgroundColor = t.box;
-      document.querySelectorAll(".item").forEach(e => e.style.background = t.box);
-      progressoTexto.style.color = t.title;
-      progressoBarra.style.background = t.progress;
-      localStorage.setItem("tema_app", nome);
-    }
-
-    document.getElementById("add-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const emoji = document.getElementById("novoEmoji").value.trim() || "📝";
-      const nome = document.getElementById("novoNome").value.trim();
-      const qtd = document.getElementById("novaQtd").value.trim();
-      if (nome && qtd) {
-        dadosExtras.push([emoji, nome, qtd]);
-        e.target.reset();
+    function adicionarItem() {
+      const emoji = document.getElementById("newEmoji").value.trim() || "📝";
+      const nome = document.getElementById("newName").value.trim();
+      const qtd = document.getElementById("newQtd").value.trim();
+      const cat = document.getElementById("newCategoria").value;
+      if (nome && qtd && cat) {
+        dados[cat].push([emoji, nome, qtd]);
+        popup.style.display = "none";
+        document.getElementById("newEmoji").value = "";
+        document.getElementById("newName").value = "";
+        document.getElementById("newQtd").value = "";
         renderChecklist();
       }
+    }
+
+    function toggleSearch() {
+      searchBar.style.display = searchBar.style.display === "none" ? "block" : "none";
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light-theme");
+    }
+
+    searchInput.addEventListener("input", () => {
+      const busca = searchInput.value.toLowerCase();
+      document.querySelectorAll(".item").forEach(item => {
+        const match = item.dataset.nome.includes(busca);
+        item.style.display = match ? "flex" : "none";
+      });
     });
 
-    const temaSalvo = localStorage.getItem("tema_app") || "dracula";
-    temaSelector.value = temaSalvo;
-    aplicarTema(temaSalvo);
     renderChecklist();
   </script>
 </body>
