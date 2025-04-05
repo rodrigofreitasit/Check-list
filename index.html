@@ -3,17 +3,22 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Dieta Completa - Planner V9</title>
+  <title>Dieta Completa - V9 Cardápio Real</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0 0 100px;
       background: #282a36;
       color: #f8f8f2;
+      margin: 0;
+      padding: 0 0 80px;
+    }
+    .container {
+      padding: 20px;
+    }
+    h2 {
+      color: #50fa7b;
     }
     select {
       width: 100%;
@@ -64,51 +69,29 @@
       text-align: center;
       margin-top: 30px;
     }
-    h2 {
-      margin: 10px 0;
-      color: #50fa7b;
-    }
-    .container {
-      padding: 20px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Modo Dieta Completa</h2>
     <select id="diaSelect" onchange="trocarDia()"></select>
-
     <h2>Cardápio</h2>
     <div id="refeicoesContainer"></div>
-
     <h2>Água (meta: 2L = 10 copos)</h2>
     <div class="agua" id="aguaContainer"></div>
-
     <div class="motivacional" id="fraseMotivacional"></div>
   </div>
-
   <script>
     const frases = [
       "Você não precisa ser perfeito, só precisa começar.",
-      "Cada refeição saudável é um passo rumo ao seu objetivo.",
       "A consistência vence a motivação.",
+      "Cada refeição saudável é um passo rumo ao seu objetivo.",
       "Você é mais forte do que imagina.",
       "Confie no processo. Ele funciona."
     ];
-
     const cardapio = {
-      1: ["Café da manhã: Omelete + Aveia com banana",
-          "Almoço: Frango grelhado + Mix de legumes",
-          "Lanche: Iogurte com chia",
-          "Jantar: Sopa de legumes com ovo cozido"],
-      2: ["Café: Panqueca de banana com aveia",
-          "Almoço: Peixe + batata doce",
-          "Lanche: Fruta + castanhas",
-          "Jantar: Omelete com legumes"]
+
     };
-    for (let i = 3; i <= 15; i++) {
-      cardapio[i] = ["Café: Exemplo", "Almoço: Exemplo", "Lanche: Exemplo", "Jantar: Exemplo"];
-    }
 
     let diaAtual = 1;
 
