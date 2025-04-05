@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Checklist Dieta V7</title>
+  <title>Dieta Completa - Dia 1</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -11,358 +11,165 @@
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
-      padding-bottom: 120px;
-      background-color: #282a36;
+      padding: 0 0 100px;
+      background: #282a36;
       color: #f8f8f2;
     }
 
-    #searchBar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 12px 20px;
-      background: #1e1f29;
-      z-index: 1000;
-    }
-    #searchInput {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-    }
-
-    .container {
-      padding: 80px 20px 20px;
-    }
-
-    h2 {
-      color: #50fa7b;
-    }
-
-    .item {
+    .tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #44475a;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .item-left {
-      display: flex;
-      align-items: center;
-      flex-grow: 1;
-    }
-
-    .item .icon {
-      font-size: 18px;
-      margin-right: 10px;
-    }
-
-    .item label {
-      flex-grow: 1;
-    }
-
-    .item button {
-      background: none;
-      border: none;
-      color: #f8f8f2;
-      cursor: pointer;
-      font-size: 18px;
-      margin-left: 8px;
-    }
-
-    input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      margin-right: 10px;
-      accent-color: #bd93f9;
-    }
-
-    .bottom-menu {
+      justify-content: space-around;
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 12px 20px;
       background: #1e1f29;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      z-index: 1000;
+      border-top: 1px solid #444;
+      z-index: 999;
     }
 
-    .bottom-buttons {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .bottom-buttons button {
+    .tabs button {
       flex: 1;
-      padding: 10px;
-      font-weight: bold;
-      font-size: 14px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      background: #50fa7b;
-      color: #282a36;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: #bd93f9;
-      border-radius: 5px;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-
-    .popup-content {
-      background: #f8f8f2;
-      color: #282a36;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      position: relative;
-    }
-
-    .popup-content h3 {
-      margin-top: 0;
-    }
-
-    .popup-content input, .popup-content select {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .popup-content button {
-      width: 100%;
-      padding: 10px;
-      background: #50fa7b;
-      border: none;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .popup-content .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 18px;
-      cursor: pointer;
+      padding: 12px;
+      font-size: 16px;
       background: none;
       border: none;
+      color: #f8f8f2;
+      cursor: pointer;
+    }
+
+    .content {
+      padding: 20px;
+      padding-top: 40px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h2 {
+      color: #50fa7b;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .refeicao {
+      background: #44475a;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .agua {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .copo {
+      width: 30px;
+      height: 30px;
+      background: #6272a4;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      user-select: none;
+    }
+
+    .copo.cheio {
+      background: #50fa7b;
       color: #282a36;
+    }
+
+    .motivacional {
+      font-size: 16px;
+      color: #f1fa8c;
+      background: #44475a;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div id="searchBar">
-    <input type="text" id="searchInput" placeholder="Buscar item..." />
+  <div class="content" id="listaPage">
+    <h2>Lista de Compras</h2>
+    <p>(Simulação do conteúdo da lista de compras...)</p>
   </div>
 
-  <div class="container" id="checklistContainer"></div>
-
-  <div class="bottom-menu">
-    <div class="bottom-buttons">
-      <button onclick="marcarTodos()">✔️ Marcar todos</button>
-      <button onclick="desmarcarTodos()">❌ Desmarcar todos</button>
-      <button onclick="openPopup()">➕ Adicionar</button>
+  <div class="content hidden" id="plannerPage">
+    <div class="section">
+      <h2>Dia 1 - Cardápio</h2>
+      <div class="refeicao"><span>Café da manhã: Omelete + Aveia com banana</span><input type="checkbox"></div>
+      <div class="refeicao"><span>Almoço: Frango grelhado + Mix de legumes</span><input type="checkbox"></div>
+      <div class="refeicao"><span>Lanche da tarde: Iogurte com chia</span><input type="checkbox"></div>
+      <div class="refeicao"><span>Jantar: Sopa de legumes com ovo cozido</span><input type="checkbox"></div>
     </div>
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
 
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <button class="close" onclick="fecharPopup()">✖️</button>
-      <h3 id="popupTitle">Adicionar item</h3>
-      <input type="text" id="newEmoji" placeholder="Emoji" />
-      <input type="text" id="newName" placeholder="Nome do alimento" />
-      <input type="text" id="newQtd" placeholder="Quantidade" />
-      <select id="newCategoria">
-        <option value="Proteínas">Proteínas</option>
-        <option value="Laticínios">Laticínios</option>
-        <option value="Carboidratos">Carboidratos</option>
-        <option value="Frutas">Frutas</option>
-        <option value="Verduras e Legumes">Verduras e Legumes</option>
-        <option value="Outros">Outros</option>
-      </select>
-      <button onclick="salvarItem()">Salvar</button>
+    <div class="section">
+      <h2>Água - Meta: 2L (10 copos)</h2>
+      <div class="agua" id="aguaContainer"></div>
+    </div>
+
+    <div class="section">
+      <h2>Frase do Dia</h2>
+      <div class="motivacional">"Você não precisa ser perfeito, só precisa começar."</div>
     </div>
   </div>
 
-<script>
+  <div class="content hidden" id="progressoPage">
+    <h2>Progresso</h2>
+    <p>(Aqui será mostrado o resumo do progresso do usuário...)</p>
+  </div>
 
-let dados = JSON.parse(localStorage.getItem("checklist_dieta")) || {
-  "Proteínas": [["🍗", "Frango grelhado", "1.8 kg"], ["🥩", "Carne moída", "1.2 kg"]],
-  "Laticínios": [["🥛", "Leite desnatado", "900 ml"]],
-  "Carboidratos": [["🍠", "Batata doce", "390 g"], ["🍞", "Pão integral", "8 fatias"]],
-  "Frutas": [["🍌", "Banana", "110 g"]],
-  "Verduras e Legumes": [["🥬", "Mix folhas", "1.5 kg"]],
-  "Outros": [["☕", "Café", "à vontade"]]
-};
+  <div class="tabs">
+    <button onclick="mudarAba('lista')">Lista</button>
+    <button onclick="mudarAba('planner')">Planner</button>
+    <button onclick="mudarAba('progresso')">Progresso</button>
+  </div>
 
-let checkboxes = [];
-let editando = null;
+  <script>
+    const copos = 10;
+    const aguaContainer = document.getElementById("aguaContainer");
 
-function salvarLocal() {
-  localStorage.setItem("checklist_dieta", JSON.stringify(dados));
-}
+    function criarCopos() {
+      aguaContainer.innerHTML = "";
+      for (let i = 0; i < copos; i++) {
+        const copo = document.createElement("div");
+        copo.className = "copo";
+        copo.textContent = "💧";
+        copo.addEventListener("click", () => {
+          copo.classList.toggle("cheio");
+        });
+        aguaContainer.appendChild(copo);
+      }
+    }
 
-function renderChecklist() {
-  const container = document.getElementById("checklistContainer");
-  container.innerHTML = "";
-  checkboxes = [];
-  let i = 0;
+    function mudarAba(aba) {
+      document.getElementById("listaPage").classList.add("hidden");
+      document.getElementById("plannerPage").classList.add("hidden");
+      document.getElementById("progressoPage").classList.add("hidden");
 
-  for (const [categoria, itens] of Object.entries(dados)) {
-    const h2 = document.createElement("h2");
-    h2.textContent = categoria;
-    container.appendChild(h2);
+      if (aba === "lista") {
+        document.getElementById("listaPage").classList.remove("hidden");
+      } else if (aba === "planner") {
+        document.getElementById("plannerPage").classList.remove("hidden");
+      } else if (aba === "progresso") {
+        document.getElementById("progressoPage").classList.remove("hidden");
+      }
+    }
 
-    itens.forEach(([emoji, nome, qtd], idx) => {
-      const cid = `item_${categoria}_${idx}`;
-      const div = document.createElement("div");
-      div.className = "item";
-      div.dataset.nome = nome.toLowerCase();
-
-      const checked = localStorage.getItem(cid) === "true";
-
-      div.innerHTML = `
-        <div class="item-left">
-          <input type="checkbox" id="${cid}" ${checked ? "checked" : ""}>
-          <span class="icon">${emoji}</span>
-          <label for="${cid}">${nome}: ${qtd}</label>
-        </div>
-        <div>
-          <button onclick="editarItem('${categoria}', ${idx})">✏️</button>
-          <button onclick="excluirItem('${categoria}', ${idx})">🗑️</button>
-        </div>
-      `;
-
-      const cb = div.querySelector("input");
-      cb.addEventListener("change", () => {
-        localStorage.setItem(cid, cb.checked);
-        atualizarProgresso();
-      });
-
-      container.appendChild(div);
-      checkboxes.push(cb);
-    });
-  }
-
-  atualizarProgresso();
-}
-
-function atualizarProgresso() {
-  const total = checkboxes.length;
-  const marcados = checkboxes.filter(cb => cb.checked).length;
-  const pct = total > 0 ? Math.round((marcados / total) * 100) : 0;
-  document.getElementById("progressBar").style.width = pct + "%";
-}
-
-function openPopup() {
-  editando = null;
-  document.getElementById("popupTitle").textContent = "Adicionar item";
-  document.getElementById("newEmoji").value = "";
-  document.getElementById("newName").value = "";
-  document.getElementById("newQtd").value = "";
-  document.getElementById("newCategoria").value = "Proteínas";
-  document.getElementById("popup").style.display = "flex";
-}
-
-function fecharPopup() {
-  document.getElementById("popup").style.display = "none";
-}
-
-function salvarItem() {
-  const emoji = document.getElementById("newEmoji").value.trim() || "📝";
-  const nome = document.getElementById("newName").value.trim();
-  const qtd = document.getElementById("newQtd").value.trim();
-  const cat = document.getElementById("newCategoria").value;
-
-  if (!nome || !qtd) {
-    alert("Preencha o nome e a quantidade.");
-    return;
-  }
-
-  if (editando) {
-    const [catAntiga, idx] = editando;
-    dados[catAntiga].splice(idx, 1);
-  }
-
-  if (!dados[cat]) dados[cat] = [];
-  dados[cat].push([emoji, nome, qtd]);
-
-  salvarLocal();
-  fecharPopup();
-  renderChecklist();
-}
-
-function editarItem(categoria, idx) {
-  editando = [categoria, idx];
-  const [emoji, nome, qtd] = dados[categoria][idx];
-  document.getElementById("newEmoji").value = emoji;
-  document.getElementById("newName").value = nome;
-  document.getElementById("newQtd").value = qtd;
-  document.getElementById("newCategoria").value = categoria;
-  document.getElementById("popupTitle").textContent = "Editar item";
-  document.getElementById("popup").style.display = "flex";
-}
-
-function excluirItem(categoria, idx) {
-  if (confirm("Tem certeza que deseja excluir este item?")) {
-    dados[categoria].splice(idx, 1);
-    salvarLocal();
-    renderChecklist();
-  }
-}
-
-function marcarTodos() {
-  checkboxes.forEach((cb, i) => {
-    cb.checked = true;
-    localStorage.setItem(cb.id, "true");
-  });
-  atualizarProgresso();
-}
-
-function desmarcarTodos() {
-  checkboxes.forEach((cb, i) => {
-    cb.checked = false;
-    localStorage.setItem(cb.id, "false");
-  });
-  atualizarProgresso();
-}
-
-document.getElementById("searchInput").addEventListener("input", () => {
-  const termo = document.getElementById("searchInput").value.toLowerCase();
-  document.querySelectorAll(".item").forEach(item => {
-    item.style.display = item.dataset.nome.includes(termo) ? "flex" : "none";
-  });
-});
-
-renderChecklist();
-
-  // Este script será finalizado na próxima parte
-</script>
+    criarCopos();
+  </script>
 </body>
 </html>
