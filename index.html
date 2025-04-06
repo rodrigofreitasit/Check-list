@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Dieta Completa - V9 com Cardápio Real</title>
+  <title>Dieta Completa com Progresso</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -12,17 +12,41 @@
       background: #282a36;
       color: #f8f8f2;
       margin: 0;
+      padding-bottom: 100px;
+    }
+    .tabs {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      background: #1e1f29;
+      border-top: 1px solid #444;
+    }
+    .tabs button {
+      flex: 1;
+      padding: 15px;
+      font-size: 16px;
+      background: none;
+      border: none;
+      color: #f8f8f2;
+      cursor: pointer;
+    }
+    .page {
+      display: none;
       padding: 20px;
+    }
+    .page.active {
+      display: block;
     }
     select {
       width: 100%;
       padding: 10px;
-      margin: 20px 0;
-      font-size: 16px;
       background: #44475a;
-      color: #fff;
+      color: white;
       border: none;
       border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 20px;
     }
     .refeicao {
       background: #44475a;
@@ -30,24 +54,23 @@
       border-radius: 10px;
       margin-bottom: 10px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
     }
     .agua {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
-      margin: 20px 0;
     }
     .copo {
       width: 30px;
       height: 30px;
       background: #6272a4;
+      color: white;
       border-radius: 5px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      font-size: 18px;
       cursor: pointer;
     }
     .copo.cheio {
@@ -63,15 +86,42 @@
       font-size: 16px;
       color: #f1fa8c;
     }
+    .barra-container {
+      background: #44475a;
+      height: 12px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .barra {
+      background: #50fa7b;
+      height: 100%;
+      width: 0%;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
-  <h2>Modo Dieta Completa</h2>
-  <select id="diaSelect" onchange="trocarDia()"></select>
-  <div id="refeicoesContainer"></div>
-  <h3>Água (meta 2L)</h3>
-  <div class="agua" id="aguaContainer"></div>
-  <div class="motivacional" id="fraseMotivacional"></div>
+  <div id="plannerPage" class="page active">
+    <h2>Modo Dieta Completa</h2>
+    <select id="diaSelect" onchange="trocarDia()"></select>
+    <div id="refeicoesContainer"></div>
+    <h3>Água (meta 2L)</h3>
+    <div class="agua" id="aguaContainer"></div>
+    <div class="motivacional" id="fraseMotivacional"></div>
+  </div>
+
+  <div id="progressoPage" class="page">
+    <h2>Seu Progresso</h2>
+    <p>Refeições concluídas:</p>
+    <div class="barra-container"><div class="barra" id="barraProgresso"></div></div>
+    <div id="resumoProgresso"></div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="mudarAba('plannerPage')">Planner</button>
+    <button onclick="mudarAba('progressoPage')">Progresso</button>
+  </div>
+
   <script>
     const frases = [
       "Você não precisa ser perfeito, só precisa começar.",
@@ -80,14 +130,72 @@
       "Você é mais forte do que imagina.",
       "Confie no processo. Ele funciona."
     ];
-    const cardapio = {1: ["Almoço: 3 col. arroz, 1 concha feijão, 1 bife grelhado, 1 col. cenoura cozida", "Lanche: 1 iogurte desnatado + 1 banana", "Jantar: 2 ovos mexidos, 1 fatia pão integral, 1 xícara chá de camomila"], 2: ["Almoço: 4 col. arroz integral, 1 concha lentilha, frango grelhado, salada de alface e tomate", "Lanche: 1 barra de proteína + 1 maçã", "Jantar: sopa de legumes + 2 torradas integrais"], 3: ["Almoço: 3 col. purê de batata doce, carne moída refogada, brócolis no vapor", "Lanche: 1 copo vitamina com leite desnatado, morango e aveia", "Jantar: 1 omelete com legumes, 1 torrada integral"], 4: ["Almoço: 3 col. arroz, 1 concha feijão, 1 posta peixe assado, couve refogada", "Lanche: 1 iogurte + 1 colher semente de chia", "Jantar: sopa de abóbora + 1 fatia pão integral"], 5: ["Almoço: 1 prato salada variada, 3 col. arroz integral, 1 filé de frango", "Lanche: 1 banana + 1 colher pasta de amendoim", "Jantar: omelete com espinafre + chá de ervas"], 6: ["Almoço: 3 col. massa integral, carne moída com molho tomate, salada verde", "Lanche: 1 fruta + 10 castanhas", "Jantar: sopa de legumes com frango desfiado"], 7: ["Almoço: arroz integral, lentilha, filé de peixe, cenoura ralada", "Lanche: 1 iogurte natural com granola", "Jantar: 2 ovos cozidos, pão integral, salada"], 8: ["Almoço: purê de mandioquinha, carne grelhada, vagem cozida", "Lanche: 1 shake proteico", "Jantar: sopa de legumes + 1 fatia pão integral"], 9: ["Almoço: arroz, feijão, peito de frango, mix de folhas verdes", "Lanche: 1 maçã + 1 colher semente de linhaça", "Jantar: omelete + chá de camomila"], 10: ["Almoço: macarrão integral com atum, salada crua", "Lanche: 1 banana + 1 colher aveia", "Jantar: sopa detox + 2 torradas"], 11: ["Almoço: arroz integral, feijão, carne grelhada, brócolis no vapor", "Lanche: 1 copo de vitamina + 1 fatia pão integral", "Jantar: omelete + chá"], 12: ["Almoço: arroz, lentilha, frango desfiado, salada verde", "Lanche: 1 barra de proteína + 1 fruta", "Jantar: sopa com legumes e ovos"], 13: ["Almoço: purê de batata, carne moída, cenoura ralada", "Lanche: iogurte com granola", "Jantar: ovo mexido + pão integral + chá"], 14: ["Almoço: arroz, feijão, peixe grelhado, espinafre refogado", "Lanche: shake com proteína vegetal", "Jantar: sopa de legumes e batata"], 15: ["Almoço: arroz integral, frango grelhado, salada de rúcula e cenoura", "Lanche: 1 fruta + 1 colher chia", "Jantar: omelete com tomate + chá"]};
+
+    const cardapio = {
+      1: ["Almoço: 3 col. arroz, 1 concha feijão, 1 bife grelhado, 1 col. cenoura cozida",
+          "Lanche: 1 iogurte desnatado + 1 banana",
+          "Jantar: 2 ovos mexidos, 1 fatia pão integral, 1 xícara chá de camomila"],
+      2: ["Almoço: 4 col. arroz integral, 1 concha lentilha, frango grelhado, salada de alface e tomate",
+          "Lanche: 1 barra de proteína + 1 maçã",
+          "Jantar: sopa de legumes + 2 torradas integrais"],
+
+      3: ["Almoço: 3 col. purê de batata doce, carne moída refogada, brócolis no vapor",
+          "Lanche: 1 copo vitamina com leite desnatado, morango e aveia",
+          "Jantar: 1 omelete com legumes, 1 torrada integral"],
+      4: ["Almoço: 3 col. arroz, 1 concha feijão, 1 posta peixe assado, couve refogada",
+          "Lanche: 1 iogurte + 1 colher semente de chia",
+          "Jantar: sopa de abóbora + 1 fatia pão integral"],
+      5: ["Almoço: salada variada, 3 col. arroz integral, 1 filé de frango",
+          "Lanche: 1 banana + 1 colher pasta de amendoim",
+          "Jantar: omelete com espinafre + chá de ervas"],
+      6: ["Almoço: 3 col. massa integral, carne moída c/ molho tomate, salada verde",
+          "Lanche: 1 fruta + 10 castanhas",
+          "Jantar: sopa de legumes com frango desfiado"],
+      7: ["Almoço: arroz integral, lentilha, filé de peixe, cenoura ralada",
+          "Lanche: iogurte natural com granola",
+          "Jantar: ovos cozidos, pão integral, salada"],
+      8: ["Almoço: purê de mandioquinha, carne grelhada, vagem cozida",
+          "Lanche: shake proteico",
+          "Jantar: sopa de legumes + pão integral"],
+      9: ["Almoço: arroz, feijão, frango, mix de folhas verdes",
+          "Lanche: maçã + 1 colher linhaça",
+          "Jantar: omelete + chá de camomila"],
+      10: ["Almoço: macarrão integral com atum, salada crua",
+           "Lanche: banana + aveia",
+           "Jantar: sopa detox + torradas"],
+      11: ["Almoço: arroz integral, feijão, carne grelhada, brócolis",
+           "Lanche: vitamina + pão integral",
+           "Jantar: omelete + chá"],
+      12: ["Almoço: arroz, lentilha, frango desfiado, salada verde",
+           "Lanche: barra de proteína + fruta",
+           "Jantar: sopa com legumes e ovos"],
+      13: ["Almoço: purê de batata, carne moída, cenoura ralada",
+           "Lanche: iogurte com granola",
+           "Jantar: ovo mexido + pão integral + chá"],
+      14: ["Almoço: arroz, feijão, peixe grelhado, espinafre refogado",
+           "Lanche: shake com proteína vegetal",
+           "Jantar: sopa de legumes e batata"],
+      15: ["Almoço: arroz integral, frango grelhado, rúcula e cenoura",
+           "Lanche: fruta + 1 colher chia",
+           "Jantar: omelete com tomate + chá"]
+    };
+
     let diaAtual = 1;
+
     function salvarLS(k, v) {
       localStorage.setItem(k, JSON.stringify(v));
     }
+
     function carregarLS(k, d) {
       return JSON.parse(localStorage.getItem(k)) || d;
     }
+
+    function mudarAba(abaId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove("active"));
+      document.getElementById(abaId).classList.add("active");
+      if (abaId === "progressoPage") atualizarProgresso();
+    }
+
     function criarSelectDias() {
       const sel = document.getElementById("diaSelect");
       for (let i = 1; i <= 15; i++) {
@@ -97,10 +205,12 @@
         sel.appendChild(opt);
       }
     }
+
     function carregarFrase() {
-      const frase = frases[Math.floor(Math.random() * frases.length)];
-      document.getElementById("fraseMotivacional").textContent = frase;
+      document.getElementById("fraseMotivacional").textContent =
+        frases[Math.floor(Math.random() * frases.length)];
     }
+
     function carregarRefeicoes() {
       const cont = document.getElementById("refeicoesContainer");
       cont.innerHTML = "";
@@ -109,9 +219,7 @@
       lista.forEach((ref, i) => {
         const div = document.createElement("div");
         div.className = "refeicao";
-        div.innerHTML = `<span>${ref}</span><input type="checkbox" ${
-          marcadas[i] ? "checked" : ""
-        }>`;
+        div.innerHTML = `<span>${ref}</span><input type="checkbox" ${marcadas[i] ? "checked" : ""}>`;
         div.querySelector("input").addEventListener("change", e => {
           marcadas[i] = e.target.checked;
           salvarLS("ref_" + diaAtual, marcadas);
@@ -119,6 +227,7 @@
         cont.appendChild(div);
       });
     }
+
     function carregarAgua() {
       const agua = carregarLS("agua_" + diaAtual, []);
       const cont = document.getElementById("aguaContainer");
@@ -136,12 +245,40 @@
         cont.appendChild(copo);
       }
     }
+
     function trocarDia() {
       diaAtual = parseInt(document.getElementById("diaSelect").value);
       carregarRefeicoes();
       carregarAgua();
       carregarFrase();
     }
+
+    function atualizarProgresso() {
+      let totalRefeicoes = 0;
+      let totalFeitas = 0;
+      let totalAgua = 0;
+      let diasConcluidos = 0;
+
+      for (let i = 1; i <= 15; i++) {
+        const refeicoes = cardapio[i];
+        const feitas = carregarLS("ref_" + i, []);
+        const agua = carregarLS("agua_" + i, []);
+        totalRefeicoes += refeicoes.length;
+        totalFeitas += feitas.filter(Boolean).length;
+        totalAgua += agua.filter(Boolean).length;
+        if (feitas.length === refeicoes.length && feitas.every(f => f)) {
+          diasConcluidos++;
+        }
+      }
+
+      const pct = Math.round((totalFeitas / totalRefeicoes) * 100);
+      document.getElementById("barraProgresso").style.width = pct + "%";
+      document.getElementById("resumoProgresso").innerHTML =
+        `Refeições feitas: ${totalFeitas} de ${totalRefeicoes}<br>` +
+        `Copos de água: ${totalAgua} de ${15 * 10}<br>` +
+        `Dias completos: ${diasConcluidos} de 15`;
+    }
+
     criarSelectDias();
     trocarDia();
   </script>
