@@ -16,14 +16,7 @@ const frases = [
   "Confie no processo. Ele funciona."
 ];
 
-const cardapio = {
-  1: ["Almoço: 3 col. arroz, feijão, bife grelhado, cenoura cozida",
-      "Lanche: iogurte desnatado + banana",
-      "Jantar: 2 ovos mexidos, pão integral, chá de camomila"],
-  2: ["Almoço: arroz integral, lentilha, frango grelhado, salada",
-      "Lanche: barra de proteína + maçã",
-      "Jantar: sopa de legumes + torradas"]
-};
+const cardapio = {1: ["Almoço: 3 col. arroz, 1 concha feijão, 1 bife grelhado, 1 col. cenoura cozida", "Lanche: 1 iogurte desnatado + 1 banana", "Jantar: 2 ovos mexidos, 1 fatia pão integral, 1 xícara chá de camomila"], 2: ["Almoço: 4 col. arroz integral, 1 concha lentilha, frango grelhado, salada de alface e tomate", "Lanche: 1 barra de proteína + 1 maçã", "Jantar: sopa de legumes + 2 torradas integrais"], 3: ["Almoço: purê de batata doce, carne moída refogada, brócolis no vapor", "Lanche: vitamina com leite desnatado, morango e aveia", "Jantar: omelete com legumes + 1 torrada integral"], 4: ["Almoço: arroz, feijão, posta de peixe assado, couve refogada", "Lanche: iogurte + semente de chia", "Jantar: sopa de abóbora + 1 fatia pão integral"], 5: ["Almoço: salada variada, arroz integral, filé de frango", "Lanche: banana + pasta de amendoim", "Jantar: omelete com espinafre + chá de ervas"], 6: ["Almoço: massa integral com carne moída ao molho de tomate, salada verde", "Lanche: fruta + 10 castanhas", "Jantar: sopa de legumes com frango desfiado"], 7: ["Almoço: arroz integral, lentilha, filé de peixe, cenoura ralada", "Lanche: iogurte natural com granola", "Jantar: ovos cozidos, pão integral, salada"], 8: ["Almoço: purê de mandioquinha, carne grelhada, vagem cozida", "Lanche: shake proteico", "Jantar: sopa de legumes + pão integral"], 9: ["Almoço: arroz, feijão, peito de frango, mix de folhas verdes", "Lanche: maçã + semente de linhaça", "Jantar: omelete + chá de camomila"], 10: ["Almoço: macarrão integral com atum, salada crua", "Lanche: banana + aveia", "Jantar: sopa detox + 2 torradas"], 11: ["Almoço: arroz integral, feijão, carne grelhada, brócolis no vapor", "Lanche: vitamina + pão integral", "Jantar: omelete + chá"], 12: ["Almoço: arroz, lentilha, frango desfiado, salada verde", "Lanche: barra de proteína + fruta", "Jantar: sopa com legumes e ovos"], 13: ["Almoço: purê de batata, carne moída, cenoura ralada", "Lanche: iogurte com granola", "Jantar: ovo mexido + pão integral + chá"], 14: ["Almoço: arroz, feijão, peixe grelhado, espinafre refogado", "Lanche: shake com proteína vegetal", "Jantar: sopa de legumes e batata"], 15: ["Almoço: arroz integral, frango grelhado, salada de rúcula e cenoura", "Lanche: fruta + chia", "Jantar: omelete com tomate + chá"]};
 for (let i = 3; i <= 15; i++) {
   cardapio[i] = ["Almoço: Exemplo", "Lanche: Exemplo", "Jantar: Exemplo"];
 }
