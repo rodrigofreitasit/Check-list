@@ -2,106 +2,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Dieta Completa com Progresso</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #282a36;
-      color: #f8f8f2;
-      margin: 0;
-      padding-bottom: 100px;
-    }
-    .tabs {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      background: #1e1f29;
-      border-top: 1px solid #444;
-    }
-    .tabs button {
-      flex: 1;
-      padding: 15px;
-      font-size: 16px;
-      background: none;
-      border: none;
-      color: #f8f8f2;
-      cursor: pointer;
-    }
-    .page {
-      display: none;
-      padding: 20px;
-    }
-    .page.active {
-      display: block;
-    }
-    select {
-      width: 100%;
-      padding: 10px;
-      background: #44475a;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-    .refeicao {
-      background: #44475a;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-    }
-    .agua {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .copo {
-      width: 30px;
-      height: 30px;
-      background: #6272a4;
-      color: white;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .copo.cheio {
-      background: #50fa7b;
-      color: #282a36;
-    }
-    .motivacional {
-      margin-top: 30px;
-      background: #44475a;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 16px;
-      color: #f1fa8c;
-    }
-    .barra-container {
-      background: #44475a;
-      height: 12px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-    .barra {
-      background: #50fa7b;
-      height: 100%;
-      width: 0%;
-      border-radius: 6px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <title>App Dieta Completa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div id="plannerPage" class="page active">
+  <div class="tabs">
+    <button onclick="mudarAba('planner')">Planner</button>
+    <button onclick="mudarAba('progresso')">Progresso</button>
+    <button onclick="mudarAba('compras')">Compras</button>
+  </div>
+
+  <div class="page" id="planner">
     <h2>Modo Dieta Completa</h2>
     <select id="diaSelect" onchange="trocarDia()"></select>
     <div id="refeicoesContainer"></div>
@@ -110,177 +24,42 @@
     <div class="motivacional" id="fraseMotivacional"></div>
   </div>
 
-  <div id="progressoPage" class="page">
+  <div class="page hidden" id="progresso">
     <h2>Seu Progresso</h2>
     <p>Refeições concluídas:</p>
     <div class="barra-container"><div class="barra" id="barraProgresso"></div></div>
     <div id="resumoProgresso"></div>
   </div>
 
-  <div class="tabs">
-    <button onclick="mudarAba('plannerPage')">Planner</button>
-    <button onclick="mudarAba('progressoPage')">Progresso</button>
+  <div class="page hidden" id="compras">
+    <h2>Lista de Compras</h2>
+    <div class="bottom-buttons">
+      <button onclick="marcarTodos()">✔️ Marcar todos</button>
+      <button onclick="desmarcarTodos()">❌ Desmarcar todos</button>
+      <button onclick="abrirPopup()">➕ Adicionar</button>
+    </div>
+    <div id="checklistContainer"></div>
   </div>
 
-  <script>
-    const frases = [
-      "Você não precisa ser perfeito, só precisa começar.",
-      "A consistência vence a motivação.",
-      "Cada refeição saudável é um passo rumo ao seu objetivo.",
-      "Você é mais forte do que imagina.",
-      "Confie no processo. Ele funciona."
-    ];
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <button class="close" onclick="fecharPopup()">✖️</button>
+      <h3 id="popupTitle">Adicionar item</h3>
+      <input type="text" id="newEmoji" placeholder="Emoji" />
+      <input type="text" id="newName" placeholder="Nome do alimento" />
+      <input type="text" id="newQtd" placeholder="Quantidade" />
+      <select id="newCategoria">
+        <option value="Proteínas">Proteínas</option>
+        <option value="Laticínios">Laticínios</option>
+        <option value="Carboidratos">Carboidratos</option>
+        <option value="Frutas">Frutas</option>
+        <option value="Verduras e Legumes">Verduras e Legumes</option>
+        <option value="Outros">Outros</option>
+      </select>
+      <button onclick="salvarItem()">Salvar</button>
+    </div>
+  </div>
 
-    const cardapio = {
-      1: ["Almoço: 3 col. arroz, 1 concha feijão, 1 bife grelhado, 1 col. cenoura cozida",
-          "Lanche: 1 iogurte desnatado + 1 banana",
-          "Jantar: 2 ovos mexidos, 1 fatia pão integral, 1 xícara chá de camomila"],
-      2: ["Almoço: 4 col. arroz integral, 1 concha lentilha, frango grelhado, salada de alface e tomate",
-          "Lanche: 1 barra de proteína + 1 maçã",
-          "Jantar: sopa de legumes + 2 torradas integrais"],
-
-      3: ["Almoço: 3 col. purê de batata doce, carne moída refogada, brócolis no vapor",
-          "Lanche: 1 copo vitamina com leite desnatado, morango e aveia",
-          "Jantar: 1 omelete com legumes, 1 torrada integral"],
-      4: ["Almoço: 3 col. arroz, 1 concha feijão, 1 posta peixe assado, couve refogada",
-          "Lanche: 1 iogurte + 1 colher semente de chia",
-          "Jantar: sopa de abóbora + 1 fatia pão integral"],
-      5: ["Almoço: salada variada, 3 col. arroz integral, 1 filé de frango",
-          "Lanche: 1 banana + 1 colher pasta de amendoim",
-          "Jantar: omelete com espinafre + chá de ervas"],
-      6: ["Almoço: 3 col. massa integral, carne moída c/ molho tomate, salada verde",
-          "Lanche: 1 fruta + 10 castanhas",
-          "Jantar: sopa de legumes com frango desfiado"],
-      7: ["Almoço: arroz integral, lentilha, filé de peixe, cenoura ralada",
-          "Lanche: iogurte natural com granola",
-          "Jantar: ovos cozidos, pão integral, salada"],
-      8: ["Almoço: purê de mandioquinha, carne grelhada, vagem cozida",
-          "Lanche: shake proteico",
-          "Jantar: sopa de legumes + pão integral"],
-      9: ["Almoço: arroz, feijão, frango, mix de folhas verdes",
-          "Lanche: maçã + 1 colher linhaça",
-          "Jantar: omelete + chá de camomila"],
-      10: ["Almoço: macarrão integral com atum, salada crua",
-           "Lanche: banana + aveia",
-           "Jantar: sopa detox + torradas"],
-      11: ["Almoço: arroz integral, feijão, carne grelhada, brócolis",
-           "Lanche: vitamina + pão integral",
-           "Jantar: omelete + chá"],
-      12: ["Almoço: arroz, lentilha, frango desfiado, salada verde",
-           "Lanche: barra de proteína + fruta",
-           "Jantar: sopa com legumes e ovos"],
-      13: ["Almoço: purê de batata, carne moída, cenoura ralada",
-           "Lanche: iogurte com granola",
-           "Jantar: ovo mexido + pão integral + chá"],
-      14: ["Almoço: arroz, feijão, peixe grelhado, espinafre refogado",
-           "Lanche: shake com proteína vegetal",
-           "Jantar: sopa de legumes e batata"],
-      15: ["Almoço: arroz integral, frango grelhado, rúcula e cenoura",
-           "Lanche: fruta + 1 colher chia",
-           "Jantar: omelete com tomate + chá"]
-    };
-
-    let diaAtual = 1;
-
-    function salvarLS(k, v) {
-      localStorage.setItem(k, JSON.stringify(v));
-    }
-
-    function carregarLS(k, d) {
-      return JSON.parse(localStorage.getItem(k)) || d;
-    }
-
-    function mudarAba(abaId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove("active"));
-      document.getElementById(abaId).classList.add("active");
-      if (abaId === "progressoPage") atualizarProgresso();
-    }
-
-    function criarSelectDias() {
-      const sel = document.getElementById("diaSelect");
-      for (let i = 1; i <= 15; i++) {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = "Dia " + i;
-        sel.appendChild(opt);
-      }
-    }
-
-    function carregarFrase() {
-      document.getElementById("fraseMotivacional").textContent =
-        frases[Math.floor(Math.random() * frases.length)];
-    }
-
-    function carregarRefeicoes() {
-      const cont = document.getElementById("refeicoesContainer");
-      cont.innerHTML = "";
-      const lista = cardapio[diaAtual];
-      const marcadas = carregarLS("ref_" + diaAtual, []);
-      lista.forEach((ref, i) => {
-        const div = document.createElement("div");
-        div.className = "refeicao";
-        div.innerHTML = `<span>${ref}</span><input type="checkbox" ${marcadas[i] ? "checked" : ""}>`;
-        div.querySelector("input").addEventListener("change", e => {
-          marcadas[i] = e.target.checked;
-          salvarLS("ref_" + diaAtual, marcadas);
-        });
-        cont.appendChild(div);
-      });
-    }
-
-    function carregarAgua() {
-      const agua = carregarLS("agua_" + diaAtual, []);
-      const cont = document.getElementById("aguaContainer");
-      cont.innerHTML = "";
-      for (let i = 0; i < 10; i++) {
-        const copo = document.createElement("div");
-        copo.className = "copo";
-        if (agua[i]) copo.classList.add("cheio");
-        copo.textContent = "💧";
-        copo.addEventListener("click", () => {
-          agua[i] = !agua[i];
-          salvarLS("agua_" + diaAtual, agua);
-          copo.classList.toggle("cheio");
-        });
-        cont.appendChild(copo);
-      }
-    }
-
-    function trocarDia() {
-      diaAtual = parseInt(document.getElementById("diaSelect").value);
-      carregarRefeicoes();
-      carregarAgua();
-      carregarFrase();
-    }
-
-    function atualizarProgresso() {
-      let totalRefeicoes = 0;
-      let totalFeitas = 0;
-      let totalAgua = 0;
-      let diasConcluidos = 0;
-
-      for (let i = 1; i <= 15; i++) {
-        const refeicoes = cardapio[i];
-        const feitas = carregarLS("ref_" + i, []);
-        const agua = carregarLS("agua_" + i, []);
-        totalRefeicoes += refeicoes.length;
-        totalFeitas += feitas.filter(Boolean).length;
-        totalAgua += agua.filter(Boolean).length;
-        if (feitas.length === refeicoes.length && feitas.every(f => f)) {
-          diasConcluidos++;
-        }
-      }
-
-      const pct = Math.round((totalFeitas / totalRefeicoes) * 100);
-      document.getElementById("barraProgresso").style.width = pct + "%";
-      document.getElementById("resumoProgresso").innerHTML =
-        `Refeições feitas: ${totalFeitas} de ${totalRefeicoes}<br>` +
-        `Copos de água: ${totalAgua} de ${15 * 10}<br>` +
-        `Dias completos: ${diasConcluidos} de 15`;
-    }
-
-    criarSelectDias();
-    trocarDia();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
